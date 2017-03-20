@@ -934,7 +934,7 @@ var Forms = React.createClass({
         stores.pageState.setHeaderBreadcrumb(
           [
             {
-              label: t('Projects'),
+              label: t('Surveys'),
               'to': 'forms'
             }
           ]
@@ -1265,7 +1265,7 @@ var FormEnketoPreview = React.createClass({
       });
       let bcRoot;
       if (asset.asset_type === 'survey') {
-        bcRoot = {'label': t('Projects'), 'to': 'forms'};
+        bcRoot = {'label': t('Surveys'), 'to': 'forms'};
       } else {
         bcRoot = {'label': t('Library'), 'to': 'library'};
       }
@@ -1348,7 +1348,7 @@ var FormLanding = React.createClass({
     willTransitionTo: function(transition, params, idk, callback) {
       var headerBreadcrumb = [
         {
-          'label': t('Projects'),
+          'label': t('Surveys'),
           'to': 'forms',
         }
       ];

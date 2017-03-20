@@ -211,7 +211,7 @@ export default assign({
     var baseName = library ? 'library-' : '';
     let bcData = [
       {
-        'label': library ? t('Library') : t('Projects'),
+        'label': library ? t('Library') : t('Surveys'),
         'to': library ? 'library' : 'forms',
       }
     ];

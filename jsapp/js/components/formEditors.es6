@@ -83,7 +83,7 @@ var ProjectSettings = React.createClass({
   onSubmit (evt) {
     evt.preventDefault();
     if (!this.state.name.trim()) {
-      alertify.error(t('Please enter a title for your project'));
+      alertify.error(t('Please enter a title for your survey'));
     } else {
       this.props.onSubmit(this);
     }
@@ -132,7 +132,7 @@ var ProjectSettings = React.createClass({
               </a>
               <label>{t('Sharing Permissions')}</label>
               <label className="long">
-                {t('Allow others to access your project.')}
+                {t('Allow others to access your survey.')}
               </label>
               {sharedWith.length > 0 &&
                 t('Shared with ')
@@ -144,11 +144,11 @@ var ProjectSettings = React.createClass({
           }
           <bem.FormModal__item>
             <label htmlFor="name">
-              {t('Project Name')}
+              {t('Survey Name')}
             </label>
             <input type="text"
                 id="name"
-                placeholder={t('Enter title of project here')}
+                placeholder={t('Enter title of survey here')}
                 value={this.state.name}
                 onChange={this.nameChange}
               />
@@ -164,8 +164,8 @@ var ProjectSettings = React.createClass({
                 onChange={this.descriptionChange}
               />
             <label className="long">
-              {t('Please specify the country and the sector where this project will be deployed. ')}
-              {t('This information will be used to help you filter results on the project list page.')}
+              {t('Please specify the primary state and the sector where this survey will be deployed. ')}
+              {t('This information will be used to help you filter results on the survey list page.')}
             </label>
           </bem.FormModal__item>
 
@@ -182,7 +182,7 @@ var ProjectSettings = React.createClass({
           </bem.FormModal__item>
           <bem.FormModal__item  m='country'>
             <label htmlFor="country">
-              {t('Country')}
+              {t('State')}
             </label>
             <Select
               id="country"
@@ -190,21 +190,6 @@ var ProjectSettings = React.createClass({
               onChange={this.countryChange}
               options={countries}
             />
-          </bem.FormModal__item>
-          <bem.FormModal__item>
-            <label className="long">
-              {t('Help KoboToolbox improve this product by sharing the sector and country where this project will be deployed.')}
-              {t('All the information is submitted anonymously, and will not include the project name or description listed above.')}
-            </label>
-
-            <input type="checkbox"
-                id="share-metadata"
-                checked={this.state['share-metadata']}
-                onChange={this.shareMetadataChange}
-              />
-            <label htmlFor="share-metadata" className="inline">
-              {t('Share the sector and country with developers')}
-            </label>
           </bem.FormModal__item>
 
           {this.props.context == 'existingForm' && this.props.iframeUrl &&
@@ -251,11 +236,11 @@ export var NewForm = React.createClass({
   },
   render () {
     return (
-      <ui.Modal open onClose={this.routeBack} title={t('Create New Project from Scratch')}>
+      <ui.Modal open onClose={this.routeBack} title={t('Create New Survey from Scratch')}>
         <ui.Modal.Body>
           <ProjectSettings
             onSubmit={this.createAsset}
-            submitButtonValue={t('Create project')}
+            submitButtonValue={t('Create survey')}
             context='newForm'
           />
         </ui.Modal.Body>

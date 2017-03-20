@@ -82,7 +82,7 @@ var Drawer = React.createClass({
     return (
           <bem.Drawer className='k-drawer'>
             <nav className='k-drawer__icons'>
-              <DrawerLink label={t('Projects')} linkto='forms' ki-icon='projects' class='projects'/>
+              <DrawerLink label={t('Surveys')} linkto='forms' ki-icon='projects' class='projects'/>
               <DrawerLink label={t('Library')} linkto='library' ki-icon='library' class='library' />
             </nav>
 
@@ -99,7 +99,7 @@ var Drawer = React.createClass({
                 { stores.session.currentAccount ?
                   <a href={stores.session.currentAccount.projects_url} className='k-drawer__link' target="_blank">
                     <i className="k-icon k-icon-globe" />
-                    {t('Projects (legacy)')}
+                    {t('Surveys (legacy)')}
                   </a>
                 : null }
                 <a href='https://github.com/kobotoolbox/' className='k-drawer__link' target="_blank">

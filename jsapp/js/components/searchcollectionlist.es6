@@ -191,7 +191,7 @@ var SearchCollectionList = React.createClass({
     var docTitle = '';
     if (this.props.searchContext.store.filterTags == 'asset_type:survey') {
       var display = 'grouped';
-      docTitle = t('Projects');
+      docTitle = t('Surveys');
     } else {
       var display = 'regular';
       docTitle = t('Library');
@@ -242,7 +242,7 @@ var SearchCollectionList = React.createClass({
                       return (
                         <bem.Loading>
                           <bem.Loading__inner>
-                            {t("Let's get started by creating your first project. Click the New button to create a new form.")} 
+                            {t("Let's get started by creating your first survey. Click the New button to create a new form.")} 
                           </bem.Loading__inner>
                         </bem.Loading>
                       );

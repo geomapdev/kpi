@@ -14,6 +14,8 @@ USERNAME_INVALID_MESSAGE = _(
     'and underscores, where the first character must be a letter.'
 )
 
+EMAIL_REGEX = r'^[a-z][a-z0-9_]+@swca.com$'
+EMAIL_INVALID_MESSAGE = _('Authorized users only.')
 
 class RegistrationForm(registration_forms.RegistrationForm):
     username = forms.RegexField(
@@ -21,6 +23,11 @@ class RegistrationForm(registration_forms.RegistrationForm):
         max_length=USERNAME_MAX_LENGTH,
         label=_("Username"),
         error_messages={'invalid': USERNAME_INVALID_MESSAGE}
+    )
+    email = forms.RegexField(
+        regex=EMAIL_REGEX,
+        label=_('Email'),
+        error_message={'invalid': EMAIL_INVALID_MESSAGE}
     )
     name = forms.CharField(
         label=_('Name'),
@@ -30,16 +37,16 @@ class RegistrationForm(registration_forms.RegistrationForm):
         label=_('Organization name'),
         required=False,
     )
-    gender = forms.ChoiceField(
-        label=_('Gender'),
-        required=False,
-        choices=(
-                 ('', ''),
-                 ('male', _('Male')),
-                 ('female', _('Female')),
-                 ('other', _('Other')),
-                 )
-    )
+    #gender = forms.ChoiceField(
+    #    label=_('Gender'),
+    #    required=False,
+    #    choices=(
+    #             ('', ''),
+    #             ('male', _('Male')),
+    #             ('female', _('Female')),
+    #             ('other', _('Other')),
+    #             )
+    #)
 
     sector = forms.ChoiceField(
         label=_('Sector'),
@@ -48,7 +55,7 @@ class RegistrationForm(registration_forms.RegistrationForm):
             ) + SECTORS,
     )
     country = forms.ChoiceField(
-        label=_('Country'),
+        label=_('State'),
         required=False,
         choices=(('', ''),) + COUNTRIES,
     )
@@ -66,7 +73,7 @@ class RegistrationForm(registration_forms.RegistrationForm):
             'username',
             'organization',
             'email',
-            'gender',
+            #'gender',
             'sector',
             'country',
             'default_language',
