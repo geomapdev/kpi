@@ -956,7 +956,7 @@ var dmix = {
  
         stores.pageState.setHeaderBreadcrumb([
           {
-            label: library ? t('Library') : t('Projects'),
+            label: library ? t('Library') : t('Surveys'),
             to: library ? 'library' : 'forms',
           },
           {
