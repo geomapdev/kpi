@@ -1,12 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 # 😬
+from __future__ import unicode_literals
 
 from kpi.models import Asset
 from kpi.utils.sluggify import sluggify_label
 from pprint import pprint
 from collections import OrderedDict
-import pytest
+
+# import pytest
 import json
 import string
 import inspect
@@ -49,6 +51,7 @@ def rank_asset_content():
         ],
         u'settings': {},
     }
+
 
 def rank_asset_named_content():
     return {
@@ -449,3 +452,114 @@ def test_named_score_question_compiles():
         [u'end_group', False,
             u'$kuid']
     ]
+
+
+def kobomatrix_content():
+    return {
+        u'survey': [
+            {'type': 'begin_kobomatrix',
+                'name': 'm1',
+                'label': 'Itéms',
+                'kobo--matrix_list': 'car_bike_tv',
+             },
+            {'type': 'select_one', 'select_from_list_name': 'yn',
+             'label': 'Possess?', 'name': 'possess', 'required': True},
+            {'type': 'select_one', 'select_from_list_name': 'yn',
+             'label': 'Necessary?', 'name': 'necess', 'required': True},
+            {'type': 'integer',
+             'label': 'Number', 'name': 'number', 'required': True},
+            {'type': 'end_kobomatrix'},
+        ],
+        'choices': [
+            {'list_name': 'car_bike_tv', 'label': 'Car', 'name': 'car'},
+            {'list_name': 'car_bike_tv', 'label': 'Bike', 'name': 'bike'},
+            {'list_name': 'car_bike_tv', 'label': 'TV', 'name': 'tv'},
+        ],
+        'settings': {},
+    }
+
+
+def test_kobomatrix_content():
+    content = _compile_asset_content(kobomatrix_content())
+    pattern = ['w7', 'w1', 'w2', 'w2', 'w2', '']
+    _survey = content.get('survey')
+    _names = [r.get('name') for r in _survey]
+    _labls = [r.get('label', [None])[0] for r in _survey]
+    _none_labels = [label is None for label in _labls]
+    _reqds = [r.get('required', None) for r in _survey]
+
+    # appearance fields match
+    assert [r.get('appearance', '').split(' ')[0] for r in _survey] == (
+            pattern * 4)
+    _appearances = [r.get('appearance') for r in _survey]
+    assert _appearances[7:11] == ['w1',
+                                  'w2 horizontal-compact',
+                                  'w2 horizontal-compact',
+                                  'w2 no-label',
+                                  ]
+    assert _appearances[13:17] == ['w1',
+                                   'w2 horizontal-compact',
+                                   'w2 horizontal-compact',
+                                   'w2 no-label',
+                                   ]
+    assert _appearances[19:23] == ['w1',
+                                   'w2 horizontal-compact',
+                                   'w2 horizontal-compact',
+                                   'w2 no-label',
+                                   ]
+
+    # names match
+    assert _names == ['m1_header',
+                      'm1_header_note',
+                      'm1_header_possess',
+                      'm1_header_necess',
+                      'm1_header_number',
+                      None,
+                      'm1_car',
+                      'm1_car_note',
+                      'm1_car_possess',
+                      'm1_car_necess',
+                      'm1_car_number',
+                      None,
+                      'm1_bike',
+                      'm1_bike_note',
+                      'm1_bike_possess',
+                      'm1_bike_necess',
+                      'm1_bike_number',
+                      None,
+                      'm1_tv',
+                      'm1_tv_note',
+                      'm1_tv_possess',
+                      'm1_tv_necess',
+                      'm1_tv_number',
+                      None,
+                      ]
+
+    assert _none_labels == [True, False, False, False, False, True] * 4
+    assert _labls[1:5] == ['**Itéms**',
+                           '**Possess?**',
+                           '**Necessary?**',
+                           '**Number**',
+                           ]
+
+    def _span(item):
+        return '<span style="display:none">{}</span>'.format(item)
+
+    assert _labls[7:11] == ['##### Car',
+                            _span('car-Possess?'),
+                            _span('car-Necessary?'),
+                            _span('car-Number'),
+                            ]
+    assert _labls[13:17] == ['##### Bike',
+                             _span('bike-Possess?'),
+                             _span('bike-Necessary?'),
+                             _span('bike-Number'),
+                             ]
+    assert _labls[19:23] == ['##### TV',
+                             _span('tv-Possess?'),
+                             _span('tv-Necessary?'),
+                             _span('tv-Number'),
+                             ]
+    assert _reqds == [None, False, False, False, False, None] + (
+                        [None, False, True, True, True, None] * 3
+                    )

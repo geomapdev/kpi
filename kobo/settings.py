@@ -86,7 +86,8 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'oauth2_provider',
     'markitup',
-    'django_digest'
+    'django_digest',
+    'guardian', # For access to KC permissions ONLY
 )
 
 MIDDLEWARE_CLASSES = (
@@ -330,15 +331,19 @@ CELERYBEAT_SCHEDULE = {
 }
 
 if 'KOBOCAT_URL' in os.environ:
-    # Create/update KPI assets to match KC forms
-    SYNC_KOBOCAT_XFORMS_PERIOD_MINUTES = int(os.environ.get('SYNC_KOBOCAT_XFORMS_PERIOD_MINUTES',
-                                                            '30'))
-    CELERYBEAT_SCHEDULE['sync-kobocat-xforms'] = {
-        'task': 'kpi.tasks.sync_kobocat_xforms',
-        'schedule': timedelta(minutes=SYNC_KOBOCAT_XFORMS_PERIOD_MINUTES),
-        'options': {'queue': 'sync_kobocat_xforms_queue',
-                    'expires': SYNC_KOBOCAT_XFORMS_PERIOD_MINUTES /2. * 60},
-    }
+    SYNC_KOBOCAT_XFORMS = (os.environ.get('SYNC_KOBOCAT_XFORMS', 'True') == 'True')
+    SYNC_KOBOCAT_PERMISSIONS = (
+        os.environ.get('SYNC_KOBOCAT_PERMISSIONS', 'True') == 'True')
+    if SYNC_KOBOCAT_XFORMS:
+        # Create/update KPI assets to match KC forms
+        SYNC_KOBOCAT_XFORMS_PERIOD_MINUTES = int(
+            os.environ.get('SYNC_KOBOCAT_XFORMS_PERIOD_MINUTES', '30'))
+        CELERYBEAT_SCHEDULE['sync-kobocat-xforms'] = {
+            'task': 'kpi.tasks.sync_kobocat_xforms',
+            'schedule': timedelta(minutes=SYNC_KOBOCAT_XFORMS_PERIOD_MINUTES),
+            'options': {'queue': 'sync_kobocat_xforms_queue',
+                        'expires': SYNC_KOBOCAT_XFORMS_PERIOD_MINUTES /2. * 60},
+        }
 
 '''
 Distinct projects using Celery need their own queues. Example commands for
